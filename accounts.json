@@ -1,0 +1,21 @@
+{
+    "1117442507": {
+        "account_holder": "mohsen",
+        "accounts": {
+            "4": {
+                "bank_name": "stc bank",
+                "balance": 0,
+                "income": [],
+                "expenses": [],
+                "debts": []
+            },
+            "66": {
+                "bank_name": "rajhi",
+                "balance": 0,
+                "income": [],
+                "expenses": [],
+                "debts": []
+            }
+        }
+    }
+}
