@@ -1,6 +1,7 @@
 from bank_module.account_owner import AccountOwner
 from bank_module.user_manager import UserManager
 
+
 user_manager = UserManager()
 current_user = None
 
@@ -84,7 +85,11 @@ while True:
                 current_user.show_accounts()
         # Add Income
         case "8":
-            pass
+            if current_user is None:
+                print("No user logged in.")
+            else:
+                account_number = input("Enter your account number: ")
+                current_user.add_income(account_number)
         # Add Expense
         case "9":
             pass

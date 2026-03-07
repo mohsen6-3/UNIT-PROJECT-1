@@ -1,5 +1,5 @@
 import json
-
+from bank_module.finance_manager import FinanceManager
 # Create class AccountOwner
 class AccountOwner:
     # constructor 
@@ -108,3 +108,15 @@ class AccountOwner:
                     self.accounts = {}
         except FileNotFoundError:
             self.accounts = {}  
+    
+    def add_income(self, account_number):
+
+        account_number = str(account_number)
+        if account_number not in self.accounts:
+            print("Account not found.")
+            return
+        amount = float(input("Enter income amount: "))
+        finance = FinanceManager()
+        finance.add_income(self.accounts[account_number], amount)
+        self.save_account_data()
+    
