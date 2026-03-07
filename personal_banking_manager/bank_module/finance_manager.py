@@ -53,3 +53,21 @@ class FinanceManager:
             account["debts"].pop(choice_debt)
 
         print("Debt paid successfully.")
+
+    def financial_summary(self,account: dict):
+        total_income = 0
+        total_expenses = 0
+        total_debts = 0 
+        total_balance = 0
+
+        for acc in account.values():
+            total_income += sum(acc["income"])
+            total_expenses += sum(acc["expenses"])
+            total_debts += sum(debt["amount"] for debt in acc["debts"])
+            total_balance += acc["balance"]
+
+        print("\n==== Financial Summary ====")
+        print(f"Total Income: {total_income:.2f}")
+        print(f"Total Expenses: {total_expenses:.2f}")
+        print(f"Total Debts: {total_debts:.2f}")
+        print(f"Total Balance: {total_balance:.2f}")

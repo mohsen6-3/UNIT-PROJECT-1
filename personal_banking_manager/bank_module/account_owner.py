@@ -154,3 +154,7 @@ class AccountOwner:
         finance = FinanceManager()
         finance.pay_debt(self.accounts[account_number], amount)
         self.save_account_data()
+
+    def financial_summary(self):
+        finance = FinanceManager()
+        finance.financial_summary(self.accounts)

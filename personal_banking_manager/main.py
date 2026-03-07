@@ -113,7 +113,10 @@ while True:
                 current_user.pay_debt(account_number)
         # Financial Summary
         case "12":
-            pass
+            if current_user is None:
+                print("No user logged in.")
+            else:
+                current_user.financial_summary()
         # Net Worth Calculation
         case "13":
             pass
