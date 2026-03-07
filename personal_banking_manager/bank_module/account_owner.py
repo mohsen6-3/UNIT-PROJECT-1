@@ -42,10 +42,10 @@ class AccountOwner:
             print("No accounts found .")
             return
         print(f"Bank Accounts for {self.get_account_holder()}:")
-        print("Account Number   | Bank Name    | Balance")
-        print("-"*40)
+        print("Account Number   | Bank Name    | Balance      | Income       | Expenses     | Debts")
+        print("-"*90)
         for account_number,account in self.accounts.items():
-            print(f"{account_number:<15}  |  {account['bank_name']:<10}  |  {account['balance']}")
+            print(f"{account_number:<15}  |  {account['bank_name']:<10}  |  {account['balance']:<10.2f}  |  {sum(account['income']):<10.2f}  |  {sum(account['expenses']):<10.2f}  |  {sum(debt['amount'] for debt in account['debts']):<10.2f}")
         self.save_account_data()
     # function delete bank account
     def delete_account(self,account_number:int):
@@ -109,6 +109,7 @@ class AccountOwner:
         except FileNotFoundError:
             self.accounts = {}  
     
+    # function add income to a specific account
     def add_income(self, account_number):
 
         account_number = str(account_number)
@@ -120,3 +121,36 @@ class AccountOwner:
         finance.add_income(self.accounts[account_number], amount)
         self.save_account_data()
     
+    # function add expense to a specific account
+    def add_expense(self, account_number):
+        account_number = str(account_number)
+        if account_number not in self.accounts:
+            print("Account not found.")
+            return
+        amount = float(input("Enter expense amount: "))
+        finance = FinanceManager()
+        finance.add_expense(self.accounts[account_number], amount)
+        self.save_account_data()
+
+    # function add debt to a specific account
+    def add_debt(self, account_number):
+        account_number = str(account_number)
+        if account_number not in self.accounts:
+            print("Account not found.")
+            return
+        amount = float(input("Enter debt amount: "))
+        description = input("Enter debt description: ")
+        finance = FinanceManager()
+        finance.add_debt(self.accounts[account_number], amount, description)
+        self.save_account_data()
+    
+    # function pay debt from a specific account
+    def pay_debt(self, account_number):
+        account_number = str(account_number)
+        if account_number not in self.accounts:
+            print("Account not found.")
+            return
+        amount = float(input("Enter amount to pay towards debt: "))
+        finance = FinanceManager()
+        finance.pay_debt(self.accounts[account_number], amount)
+        self.save_account_data()

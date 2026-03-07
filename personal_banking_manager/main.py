@@ -92,13 +92,25 @@ while True:
                 current_user.add_income(account_number)
         # Add Expense
         case "9":
-            pass
+            if current_user is None:
+                print("No user logged in.")
+            else:
+                account_number = input("Enter your account number: ")
+                current_user.add_expense(account_number)
         # Add Debt
         case "10":
-            pass
+            if current_user is None:
+                print("No user logged in.")
+            else:
+                account_number = input("Enter your account number: ")
+                current_user.add_debt(account_number)
         # Pay Debt
         case "11":
-            pass
+            if current_user is None:
+                print("No user logged in.")
+            else:
+                account_number = input("Enter your account number: ")
+                current_user.pay_debt(account_number)
         # Financial Summary
         case "12":
             pass

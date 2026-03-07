@@ -3,14 +3,40 @@
         "account_holder": "mohsen",
         "accounts": {
             "1": {
-                "bank_name": "alinma",
-                "balance": 5000.0,
+                "bank_name": "STC BANK",
+                "balance": 800.0,
                 "income": [
-                    5000.0
+                    1000.0
                 ],
-                "expenses": [],
+                "expenses": [
+                    200.0
+                ],
                 "debts": []
+            },
+            "2": {
+                "bank_name": "Riyadh",
+                "balance": 10500.0,
+                "income": [
+                    10000.0
+                ],
+                "expenses": [
+                    2000.0
+                ],
+                "debts": [
+                    {
+                        "amount": 1500.0,
+                        "description": "for bank"
+                    },
+                    {
+                        "amount": 1000.0,
+                        "description": "for ahme"
+                    }
+                ]
             }
         }
+    },
+    "1": {
+        "account_holder": "1",
+        "accounts": {}
     }
 }
