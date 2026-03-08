@@ -1,5 +1,6 @@
 import json
 from bank_module.finance_manager import FinanceManager
+from colorama import Fore, Style,Back
 # Create class AccountOwner
 class AccountOwner:
     # constructor 
@@ -35,7 +36,8 @@ class AccountOwner:
             "debts": []
         }
         self.save_account_data()
-        print("Account added successfully.")
+
+        print(Fore.GREEN +"Account added successfully."+Style.RESET_ALL)
     # function show bank accounts
     def show_accounts(self):
         if  not  self.accounts:
@@ -63,6 +65,7 @@ class AccountOwner:
         if account_number not in self.accounts:
             print("Account not found.")
             return
+        
         choise = input("Do you want to update (bank) only or (all)? ")
 
         if choise.lower() == "bank":
@@ -70,8 +73,13 @@ class AccountOwner:
             self.accounts[account_number]["bank_name"] = new_bank_name
 
         elif choise.lower() == "all":
-            new_account_number = input("Enter new account number: ")
+            try:
+                new_account_number = int(input("Enter new account number: "))
+            except ValueError:
+                print("Invalid input. Account number must be a number.")
+                return
             new_bank_name = input("Enter new bank name: ")
+            new_account_number = str(new_account_number)
             if new_account_number in self.accounts:
                 print("Account number already exists. Please choose a different number.")
                 return
@@ -79,6 +87,7 @@ class AccountOwner:
             self.accounts[new_account_number]["bank_name"] = new_bank_name
         else:
             print("Invalid choice. Please choose 'bank' or 'all'.")
+            return
 
         self.save_account_data()
         print("Account updated successfully.")
@@ -116,21 +125,28 @@ class AccountOwner:
         if account_number not in self.accounts:
             print("Account not found.")
             return
-        amount = float(input("Enter income amount: "))
-        finance = FinanceManager()
-        finance.add_income(self.accounts[account_number], amount)
-        self.save_account_data()
-    
+        try:
+            amount = float(input("Enter income amount: "))
+            finance = FinanceManager()
+            finance.add_income(self.accounts[account_number], amount)
+            self.save_account_data()
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+            return
     # function add expense to a specific account
     def add_expense(self, account_number):
         account_number = str(account_number)
         if account_number not in self.accounts:
             print("Account not found.")
             return
-        amount = float(input("Enter expense amount: "))
-        finance = FinanceManager()
-        finance.add_expense(self.accounts[account_number], amount)
-        self.save_account_data()
+        try:
+            amount = float(input("Enter expense amount: "))
+            finance = FinanceManager()
+            finance.add_expense(self.accounts[account_number], amount)
+            self.save_account_data()
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+            return
 
     # function add debt to a specific account
     def add_debt(self, account_number):
@@ -138,11 +154,15 @@ class AccountOwner:
         if account_number not in self.accounts:
             print("Account not found.")
             return
-        amount = float(input("Enter debt amount: "))
-        description = input("Enter debt description: ")
-        finance = FinanceManager()
-        finance.add_debt(self.accounts[account_number], amount, description)
-        self.save_account_data()
+        try:
+            amount = float(input("Enter debt amount: "))
+            description = input("Enter debt description: ")
+            finance = FinanceManager()
+            finance.add_debt(self.accounts[account_number], amount, description)
+            self.save_account_data()
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+            return
     
     # function pay debt from a specific account
     def pay_debt(self, account_number):
@@ -150,11 +170,27 @@ class AccountOwner:
         if account_number not in self.accounts:
             print("Account not found.")
             return
-        amount = float(input("Enter amount to pay towards debt: "))
-        finance = FinanceManager()
-        finance.pay_debt(self.accounts[account_number], amount)
-        self.save_account_data()
+        try:
+            amount = float(input("Enter amount to pay towards debt: "))
+            finance = FinanceManager()
+            finance.pay_debt(self.accounts[account_number], amount)
+            self.save_account_data()
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
 
     def financial_summary(self):
         finance = FinanceManager()
         finance.financial_summary(self.accounts)
+
+    def net_worth_calculation(self):
+        finance = FinanceManager()
+        finance.net_worth_calculation(self.accounts)
+    
+    def financial_score(self):
+        finance = FinanceManager()
+        finance.financial_score(self.accounts)
+    
+    def generate_financial_report(self):
+        finance = FinanceManager()
+        finance.generate_financial_report(self.accounts)
+        

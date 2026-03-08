@@ -15,8 +15,11 @@ class UserManager:
 
     # save data
     def save_data(self, data):
-        with open(self.FILE_NAME, "w") as file:
-            json.dump(data, file, indent=4)
+        try:
+            with open(self.FILE_NAME, "w") as file:
+                json.dump(data, file, indent=4)
+        except IOError :
+            print("Error saving data.")
 
     # register user
     def register(self, account_holder, national_id):

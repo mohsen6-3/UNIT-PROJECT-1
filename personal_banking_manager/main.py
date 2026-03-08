@@ -3,7 +3,7 @@ from bank_module.user_manager import UserManager
 
 
 user_manager = UserManager()
-current_user = None
+current_user = None\
 
 menu = '''
 \n"===== Unified Personal Banking Manager ====="
@@ -26,14 +26,18 @@ menu = '''
 Please select an option (1-16):
 '''
 while True:
-    match input(menu):
+    choice = input(menu)
+    match choice:
         # Register Account Holder
         case "1":
             account_holder = input("Enter your name: ")
-            national_id = int(input("Enter your national ID: "))
+            try: 
+                national_id = int(input("Enter your national ID: "))
+            except ValueError:
+                print("Invalid input. National ID must be a number.")
+                continue
 
             user = user_manager.register(account_holder, national_id)
-
             if user:
                 current_user = user
         # Login Account Holder
@@ -41,7 +45,11 @@ while True:
             if current_user is not None:
                 print(f"User {current_user.get_account_holder()} already logged in.")
             else:
-                national_id = int(input("Enter your national ID: "))
+                try:
+                     national_id = int(input("Enter your national ID: "))
+                except ValueError:
+                    print("Invalid input. National ID must be a number.")
+                    continue
                 user = user_manager.login(national_id)
                 if user:
                     current_user = user              
@@ -58,7 +66,11 @@ while True:
                 print("You must login first.")
             else:
                 user_bank = input("Enter your bank name such as (Alrajhi-SNP-Riyadh-Alinma-Albilad-...): ")
-                user_account_number = int(input("Enter your account number: "))
+                try:
+                      user_account_number = int(input("Enter your account number: "))
+                except ValueError:
+                    print("Invalid input. Account number must be a number.")
+                    continue
                 current_user.add_account(user_bank, user_account_number)
         # Show Bank Accounts
         case "5":
@@ -72,7 +84,11 @@ while True:
             if current_user is None:
                 print("No user logged in.")
             else:
-                user_account_number = input("Enter your account number: ")
+                try:
+                    user_account_number = int(input("Enter your account number: "))
+                except ValueError:
+                    print("Invalid input. Account number must be a number.")
+                    continue
                 current_user.delete_account(user_account_number)
     
         # Update Bank Account
@@ -80,7 +96,11 @@ while True:
             if current_user is None:
                 print("No user logged in.")
             else:
-                user_account_number = input("Enter your account number: ")
+                try:
+                    user_account_number = int(input("Enter your account number: "))
+                except ValueError:
+                    print("Invalid input. Account number must be a number.")
+                    continue
                 current_user.update_account(user_account_number)
                 current_user.show_accounts()
         # Add Income
@@ -88,28 +108,44 @@ while True:
             if current_user is None:
                 print("No user logged in.")
             else:
-                account_number = input("Enter your account number: ")
+                try:
+                    account_number = int(input("Enter your account number: "))
+                except ValueError:
+                    print("Invalid input. Account number must be a number.")
+                    continue
                 current_user.add_income(account_number)
         # Add Expense
         case "9":
             if current_user is None:
                 print("No user logged in.")
             else:
-                account_number = input("Enter your account number: ")
+                try:
+                    account_number = int(input("Enter your account number: "))
+                except ValueError:
+                    print("Invalid input. Account number must be a number.")
+                    continue
                 current_user.add_expense(account_number)
         # Add Debt
         case "10":
             if current_user is None:
                 print("No user logged in.")
             else:
-                account_number = input("Enter your account number: ")
+                try:
+                    account_number = int(input("Enter your account number: "))
+                except ValueError:
+                    print("Invalid input. Account number must be a number.")
+                    continue
                 current_user.add_debt(account_number)
         # Pay Debt
         case "11":
             if current_user is None:
                 print("No user logged in.")
             else:
-                account_number = input("Enter your account number: ")
+                try:
+                    account_number = int(input("Enter your account number: "))
+                except ValueError:
+                    print("Invalid input. Account number must be a number.")
+                    continue
                 current_user.pay_debt(account_number)
         # Financial Summary
         case "12":
@@ -119,13 +155,22 @@ while True:
                 current_user.financial_summary()
         # Net Worth Calculation
         case "13":
-            pass
+            if current_user is None:
+                print("No user logged in.")
+            else:
+                current_user.net_worth_calculation()
         # Financial Score
         case "14":
-            pass
+            if current_user is None:
+                print("No user logged in.")
+            else:
+                current_user.financial_score()
         # Generate Financial PDF Report
         case "15":
-            pass
+            if current_user is None:
+                print("No user logged in.")
+            else:
+                current_user.generate_financial_report()
         # Exit
         case "16":
             print("Exiting the program. Goodbye!")
