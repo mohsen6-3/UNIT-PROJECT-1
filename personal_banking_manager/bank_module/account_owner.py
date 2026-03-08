@@ -26,7 +26,7 @@ class AccountOwner:
     def add_account(self,bank_name:str,account_number:int):
         account_number = str(account_number)
         if account_number in self.accounts:
-            print("Account already exists for this user.")
+            print(Fore.BLUE+"Account already exists for this user."+Style.RESET_ALL)
             return
         self.accounts[account_number] = {
             "bank_name": bank_name,
@@ -41,7 +41,7 @@ class AccountOwner:
     # function show bank accounts
     def show_accounts(self):
         if  not  self.accounts:
-            print("No accounts found .")
+            print(Fore.BLUE+"No accounts found ."+Style.RESET_ALL)
             return
         print(f"Bank Accounts for {self.get_account_holder()}:")
         print("Account Number   | Bank Name    | Balance      | Income       | Expenses     | Debts")
@@ -53,17 +53,17 @@ class AccountOwner:
     def delete_account(self,account_number:int):
         account_number = str(account_number)
         if account_number not in self.accounts:
-            print("Account not found.")
+            print(Fore.BLUE+"Account not found."+Style.RESET_ALL)
             return
         del self.accounts[account_number]
         self.save_account_data()
-        print("Account deleted successfully.")
+        print(Fore.GREEN+"Account deleted successfully."+Style.RESET_ALL)
 
     # function update bank account
     def update_account(self,account_number:int):
         account_number = str(account_number)
         if account_number not in self.accounts:
-            print("Account not found.")
+            print(Fore.BLUE+"Account not found."+Style.RESET_ALL)
             return
         
         choise = input("Do you want to update (bank) only or (all)? ")
@@ -76,21 +76,21 @@ class AccountOwner:
             try:
                 new_account_number = int(input("Enter new account number: "))
             except ValueError:
-                print("Invalid input. Account number must be a number.")
+                print(Fore.RED+"Invalid input. Account number must be a number."+Style.RESET_ALL)
                 return
             new_bank_name = input("Enter new bank name: ")
             new_account_number = str(new_account_number)
             if new_account_number in self.accounts:
-                print("Account number already exists. Please choose a different number.")
+                print(Fore.BLUE+"Account number already exists. Please choose a different number."+Style.RESET_ALL)
                 return
             self.accounts[new_account_number] = self.accounts.pop(account_number)
             self.accounts[new_account_number]["bank_name"] = new_bank_name
         else:
-            print("Invalid choice. Please choose 'bank' or 'all'.")
+            print(Fore.RED+"Invalid choice. Please choose 'bank' or 'all'."+Style.RESET_ALL)
             return
 
         self.save_account_data()
-        print("Account updated successfully.")
+        print(Fore.GREEN+"Account updated successfully."+Style.RESET_ALL)
 
     # function to save account data to a JSON file
     def save_account_data(self):
@@ -123,7 +123,7 @@ class AccountOwner:
 
         account_number = str(account_number)
         if account_number not in self.accounts:
-            print("Account not found.")
+            print(Fore.BLUE+"Account not found."+Style.RESET_ALL)
             return
         try:
             amount = float(input("Enter income amount: "))
@@ -131,13 +131,13 @@ class AccountOwner:
             finance.add_income(self.accounts[account_number], amount)
             self.save_account_data()
         except ValueError:
-            print("Invalid input. Please enter a valid number.")
+            print(Fore.RED+"Invalid input. Please enter a valid number."+Style.RESET_ALL)
             return
     # function add expense to a specific account
     def add_expense(self, account_number):
         account_number = str(account_number)
         if account_number not in self.accounts:
-            print("Account not found.")
+            print(Fore.BLUE+"Account not found."+Style.RESET_ALL)
             return
         try:
             amount = float(input("Enter expense amount: "))
@@ -145,14 +145,14 @@ class AccountOwner:
             finance.add_expense(self.accounts[account_number], amount)
             self.save_account_data()
         except ValueError:
-            print("Invalid input. Please enter a valid number.")
+            print(Fore.RED+"Invalid input. Please enter a valid number."+Style.RESET_ALL)
             return
 
     # function add debt to a specific account
     def add_debt(self, account_number):
         account_number = str(account_number)
         if account_number not in self.accounts:
-            print("Account not found.")
+            print(Fore.BLUE+"Account not found."+Style.RESET_ALL)
             return
         try:
             amount = float(input("Enter debt amount: "))
@@ -161,14 +161,14 @@ class AccountOwner:
             finance.add_debt(self.accounts[account_number], amount, description)
             self.save_account_data()
         except ValueError:
-            print("Invalid input. Please enter a valid number.")
+            print(Fore.RED+"Invalid input. Please enter a valid number."+Style.RESET_ALL)
             return
     
     # function pay debt from a specific account
     def pay_debt(self, account_number):
         account_number = str(account_number)
         if account_number not in self.accounts:
-            print("Account not found.")
+            print(Fore.BLUE+"Account not found."+Style.RESET_ALL)
             return
         try:
             amount = float(input("Enter amount to pay towards debt: "))
@@ -176,7 +176,7 @@ class AccountOwner:
             finance.pay_debt(self.accounts[account_number], amount)
             self.save_account_data()
         except ValueError:
-            print("Invalid input. Please enter a valid number.")
+            print(Fore.RED+"Invalid input. Please enter a valid number."+Style.RESET_ALL)
 
     def financial_summary(self):
         finance = FinanceManager()
