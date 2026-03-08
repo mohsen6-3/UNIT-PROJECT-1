@@ -1,12 +1,14 @@
 import json
 from bank_module.finance_manager import FinanceManager
 from colorama import Fore, Style,Back
+FILE_NAME = "personal_banking_manager/bank_data/accounts.json"
 # Create class AccountOwner
 class AccountOwner:
     # constructor 
-    def __init__(self,account_holder:str,national_id:int):
+    def __init__(self,account_holder:str,national_id:int,password:str):
         self.__account_holder = account_holder
         self.__national_id = national_id
+        self.__password = password
         self.accounts = {}
         self.load_account_data()
 
@@ -21,6 +23,11 @@ class AccountOwner:
         self.__national_id = national_id
     def get_national_id(self):
         return self.__national_id
+    
+    def set_password(self,password:str):
+        self.__password = password
+    def get_password(self):
+        return self.__password
     
     # function add bank account
     def add_account(self,bank_name:str,account_number:int):
@@ -94,8 +101,9 @@ class AccountOwner:
 
     # function to save account data to a JSON file
     def save_account_data(self):
+        
         try:
-            with open("accounts.json", "r") as file:
+            with open(FILE_NAME, "r") as file:
                 data = json.load(file)
         except FileNotFoundError:
             data = {}
@@ -103,13 +111,13 @@ class AccountOwner:
             "account_holder": self.get_account_holder(),
             "accounts": self.accounts
         }
-        with open("accounts.json", "w") as file:
+        with open(FILE_NAME, "w") as file:
             json.dump(data, file, indent=4)
 
     # function to load account data from a JSON file
     def load_account_data(self):
         try:
-            with open("accounts.json", "r") as file:
+            with open(FILE_NAME, "r") as file:
                 data = json.load(file)
                 if str(self.get_national_id()) in data:
                     self.accounts = data[str(self.get_national_id())]["accounts"]

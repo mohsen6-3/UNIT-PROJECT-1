@@ -219,7 +219,7 @@ class FinanceManager:
         pdf.cell(0, 8, f"Net Worth         : {net_worth:.2f} SAR", ln=True)
 
         # إنشاء مجلد التقارير
-        report_folder = "bank_reports"
+        report_folder = "personal_banking_manager/bank_reports"
         os.makedirs(report_folder, exist_ok=True)
 
         file_path = os.path.join(report_folder, "financial_report.pdf")

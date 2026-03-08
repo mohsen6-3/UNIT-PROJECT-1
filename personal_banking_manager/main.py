@@ -1,11 +1,25 @@
 from bank_module.account_owner import AccountOwner
 from bank_module.user_manager import UserManager
-from colorama import Fore, Style,Back
+from colorama import Fore, Style
+import pwinput
 
 
 user_manager = UserManager()
 current_user = None
 
+def get_number_input(message):
+    try:
+        return int(input(message))
+    except ValueError:
+        print(Fore.RED+"Invalid input. Please enter a number."+Style.RESET_ALL)
+        return None
+
+def require_login():
+    global current_user
+    if current_user is None:
+        print(Fore.BLUE+"You must login first."+Style.RESET_ALL)
+        return False
+    return True
 menu = '''
 \n"===== Unified Personal Banking Manager ====="
 1- Register account holder
@@ -26,152 +40,152 @@ menu = '''
 16- Exit
 Please select an option (1-16):
 '''
+
 while True:
     choice = input(menu)
     match choice:
         # Register Account Holder
         case "1":
-            account_holder = input("Enter your name: ")
-            try: 
-                national_id = int(input("Enter your national ID: "))
-            except ValueError:
-                print(Fore.RED+"Invalid input. National ID must be a number."+Style.RESET_ALL)
+            name = input("Enter your name: ")
+            national_id = get_number_input("Enter your national ID: ")
+            if national_id is None:
                 continue
-
-            user = user_manager.register(account_holder, national_id)
+            try:
+                password = int(pwinput.pwinput("Enter your password: ", mask="*"))
+            except ValueError:
+                print(Fore.RED+"Invalid input. Please enter a valid password."+Style.RESET_ALL)
+                continue
+            user = user_manager.register(name, national_id,password)
             if user:
                 current_user = user
         # Login Account Holder
         case "2":
             if current_user is not None:
-                print(Fore.BLUE+f"User {current_user.get_account_holder()} already logged in."+Style.RESET_ALL)
-            else:
-                try:
-                     national_id = int(input("Enter your national ID: "))
-                except ValueError:
-                    print(Fore.RED+"Invalid input. National ID must be a number."+Style.RESET_ALL)
-                    continue
-                user = user_manager.login(national_id)
-                if user:
-                    current_user = user              
+                print(Fore.BLUE + f"User {current_user.get_account_holder()} already logged in." + Style.RESET_ALL)
+                continue
+
+            national_id = get_number_input("Enter your national ID: ")
+            if national_id is None:
+                continue
+            try:
+                password = int(pwinput.pwinput("Enter your password: ", mask="*"))
+            except ValueError:
+                print(Fore.RED+"Invalid input. Please enter a valid password."+Style.RESET_ALL)
+                continue
+            user = user_manager.login(national_id, password)
+            if user:
+                current_user = user              
         # Logout Account Holder
         case "3":
-            if current_user is None:
-                print(Fore.BLUE+"No user logged in."+Style.RESET_ALL)
-            else:
-                print(Fore.GREEN+f"User {current_user.get_account_holder()} logged out successfully."+Style.RESET_ALL)
-                current_user = None
+            if not require_login():
+                continue
+
+            print(Fore.GREEN + f"{current_user.get_account_holder()} logged out successfully." + Style.RESET_ALL)
+            current_user = None
         # Add Bank Account
         case "4":
-            if current_user is None:
-                print(Fore.BLUE+"You must login first."+Style.RESET_ALL)
-            else:
-                user_bank = input("Enter your bank name such as (Alrajhi-SNP-Riyadh-Alinma-Albilad-...): ")
-                try:
-                      user_account_number = int(input("Enter your account number: "))
-                except ValueError:
-                    print(Fore.RED+"Invalid input. Account number must be a number."+Style.RESET_ALL)
-                    continue
-                current_user.add_account(user_bank, user_account_number)
+            if not require_login():
+                continue
+
+            bank = input("Enter your bank name: ")
+            account_number = get_number_input("Enter your account number: ")
+            if account_number is None:
+                continue
+
+            current_user.add_account(bank, account_number)
         # Show Bank Accounts
         case "5":
-            if current_user is None:
-                print(Fore.BLUE+"No user logged in."+Style.RESET_ALL)
-            else:
-                current_user.show_accounts()
+            if not require_login():
+                continue
+
+            current_user.show_accounts()
         
         # Delete Bank Account
         case "6":
-            if current_user is None:
-                print(Fore.BLUE+"No user logged in."+Style.RESET_ALL)
-            else:
-                try:
-                    user_account_number = int(input("Enter your account number: "))
-                except ValueError:
-                    print(Fore.RED+"Invalid input. Account number must be a number."+Style.RESET_ALL)
-                    continue
-                current_user.delete_account(user_account_number)
+            if not require_login():
+                continue
+
+            account_number = get_number_input("Enter your account number: ")
+            if account_number is None:
+                continue
+
+            current_user.delete_account(account_number)
     
         # Update Bank Account
         case "7":
-            if current_user is None:
-                print(Fore.BLUE+"No user logged in."+Style.RESET_ALL)
-            else:
-                try:
-                    user_account_number = int(input("Enter your account number: "))
-                except ValueError:
-                    print(Fore.RED+"Invalid input. Account number must be a number."+Style.RESET_ALL)
-                    continue
-                current_user.update_account(user_account_number)
-                current_user.show_accounts()
+            if not require_login():
+                continue
+
+            account_number = get_number_input("Enter your account number: ")
+            if account_number is None:
+                continue
+
+            current_user.update_account(account_number)
+            current_user.show_accounts()
         # Add Income
         case "8":
-            if current_user is None:
-                print(Fore.BLUE+"No user logged in."+Style.RESET_ALL)
-            else:
-                try:
-                    account_number = int(input("Enter your account number: "))
-                except ValueError:
-                    print(Fore.RED+"Invalid input. Account number must be a number."+Style.RESET_ALL)
-                    continue
-                current_user.add_income(account_number)
+            if not require_login():
+                continue
+
+            account_number = get_number_input("Enter your account number: ")
+            if account_number is None:
+                continue
+
+            current_user.add_income(account_number)
         # Add Expense
         case "9":
-            if current_user is None:
-                print(Fore.BLUE+"No user logged in."+Style.RESET_ALL)
-            else:
-                try:
-                    account_number = int(input("Enter your account number: "))
-                except ValueError:
-                    print(Fore.RED+"Invalid input. Account number must be a number."+Style.RESET_ALL)
-                    continue
-                current_user.add_expense(account_number)
+            if not require_login():
+                continue
+
+            account_number = get_number_input("Enter your account number: ")
+            if account_number is None:
+                continue
+
+            current_user.add_expense(account_number)
         # Add Debt
         case "10":
-            if current_user is None:
-                print(Fore.BLUE+"No user logged in."+Style.RESET_ALL)
-            else:
-                try:
-                    account_number = int(input("Enter your account number: "))
-                except ValueError:
-                    print(Fore.RED+"Invalid input. Account number must be a number."+Style.RESET_ALL)
-                    continue
-                current_user.add_debt(account_number)
+            if not require_login():
+                continue
+
+            account_number = get_number_input("Enter your account number: ")
+            if account_number is None:
+                continue
+
+            current_user.add_debt(account_number)
         # Pay Debt
         case "11":
-            if current_user is None:
-                print(Fore.BLUE+"No user logged in."+Style.RESET_ALL)
-            else:
-                try:
-                    account_number = int(input("Enter your account number: "))
-                except ValueError:
-                    print(Fore.RED+"Invalid input. Account number must be a number."+Style.RESET_ALL)
-                    continue
-                current_user.pay_debt(account_number)
+            if not require_login():
+                continue
+
+            account_number = get_number_input("Enter your account number: ")
+            if account_number is None:
+                continue
+
+            current_user.pay_debt(account_number)
         # Financial Summary15
         case "12":
-            if current_user is None:
-                print(Fore.BLUE+"No user logged in."+Style.RESET_ALL)
-            else:
-                current_user.financial_summary()
+            if not require_login():
+                continue
+
+            current_user.financial_summary()
         # Net Worth Calculation
         case "13":
-            if current_user is None:
-                print(Fore.BLUE+"No user logged in."+Style.RESET_ALL)
-            else:
-                current_user.net_worth_calculation()
+            if not require_login():
+                continue
+
+            current_user.net_worth_calculation()
         # Financial Score
         case "14":
-            if current_user is None:
-                print(Fore.BLUE+"No user logged in."+Style.RESET_ALL)
-            else:
-                current_user.financial_score()
+            if not require_login():
+                continue
+
+            current_user.financial_score()
         # Generate Financial PDF Report
         case "15":
-            if current_user is None:
-                print(Fore.BLUE+"No user logged in."+Style.RESET_ALL)
-            else:
-                current_user.generate_financial_report()
+            if not require_login():
+                continue
+
+            current_user.generate_financial_report()
         # Exit
         case "16":
             print(Fore.GREEN+"Exiting the program. Goodbye!"+Style.RESET_ALL)
