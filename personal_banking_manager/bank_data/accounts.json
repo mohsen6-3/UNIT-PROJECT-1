@@ -5,34 +5,57 @@
         "accounts": {
             "1": {
                 "bank_name": "SNP",
-                "balance": 800000.0,
+                "balance": 50000.0,
                 "income": [
-                    1000000.0
+                    1000000.0,
+                    50000.0
                 ],
                 "expenses": [
                     200000.0,
-                    200000.0
+                    200000.0,
+                    700000.0
                 ],
                 "debts": [
                     {
-                        "amount": 200000.0,
+                        "amount": 100000.0,
                         "description": "for ali"
                     }
                 ]
             },
             "2": {
                 "bank_name": "STC bank",
-                "balance": 550000.0,
+                "balance": 150000.0,
                 "income": [
                     500000.0
                 ],
                 "expenses": [
-                    150000.0
+                    150000.0,
+                    400000.0
                 ],
                 "debts": [
                     {
                         "amount": 200000.0,
                         "description": "for bank "
+                    }
+                ]
+            },
+            "3": {
+                "bank_name": "Riyadh",
+                "balance": 110976.0,
+                "income": [
+                    100000.0
+                ],
+                "expenses": [
+                    30000.0
+                ],
+                "debts": [
+                    {
+                        "amount": 976.0,
+                        "description": "for bank"
+                    },
+                    {
+                        "amount": 40000.0,
+                        "description": "for ali"
                     }
                 ]
             }

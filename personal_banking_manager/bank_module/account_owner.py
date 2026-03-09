@@ -1,6 +1,7 @@
 import json
 from bank_module.finance_manager import FinanceManager
 from colorama import Fore, Style,Back
+from tabulate import tabulate
 FILE_NAME = "personal_banking_manager/bank_data/accounts.json"
 # Create class AccountOwner
 class AccountOwner:
@@ -50,11 +51,22 @@ class AccountOwner:
         if  not  self.accounts:
             print(Fore.BLUE+"No accounts found ."+Style.RESET_ALL)
             return
-        print(f"Bank Accounts for {self.get_account_holder()}:")
-        print("Account Number   | Bank Name    | Balance      | Income       | Expenses     | Debts")
-        print("-"*90)
+        data = [
+            ["Account Number", "Bank Name", "Balance (SAR)", "Total Income (SAR)", "Total Expenses (SAR)", "Total Debts (SAR)"]
+        ]
         for account_number,account in self.accounts.items():
-            print(f"{account_number:<15}  |  {account['bank_name']:<10}  |  {account['balance']:<10.2f}  |  {sum(account['income']):<10.2f}  |  {sum(account['expenses']):<10.2f}  |  {sum(debt['amount'] for debt in account['debts']):<10.2f}")
+            data.append([
+                account_number,
+                account["bank_name"],
+                f"{account['balance']:.2f}",
+                f"{sum(account['income']):.2f}",
+                f"{sum(account['expenses']):.2f}",
+                f"{sum(debt['amount'] for debt in account['debts']):.2f}"
+            ])
+        
+        print(f"Bank Accounts for {self.get_account_holder()}:")
+        print(tabulate(data, tablefmt="fancy_grid"))
+        
         self.save_account_data()
     # function delete bank account
     def delete_account(self,account_number:int):
@@ -76,7 +88,7 @@ class AccountOwner:
         choise = input("Do you want to update (bank) only or (all)? ")
 
         if choise.lower() == "bank":
-            new_bank_name = input("Enter new bank name: ")
+            new_bank_name = input("Enter new bank name such as (Alrajhi-SNP-Riyadh-Alinma-Albilad-...): ")
             self.accounts[account_number]["bank_name"] = new_bank_name
 
         elif choise.lower() == "all":
@@ -85,7 +97,7 @@ class AccountOwner:
             except ValueError:
                 print(Fore.RED+"Invalid input. Account number must be a number."+Style.RESET_ALL)
                 return
-            new_bank_name = input("Enter new bank name: ")
+            new_bank_name = input("Enter new bank name such as (Alrajhi-SNP-Riyadh-Alinma-Albilad-...): ")
             new_account_number = str(new_account_number)
             if new_account_number in self.accounts:
                 print(Fore.BLUE+"Account number already exists. Please choose a different number."+Style.RESET_ALL)
@@ -180,13 +192,35 @@ class AccountOwner:
         if account_number not in self.accounts:
             print(Fore.BLUE+"Account not found."+Style.RESET_ALL)
             return
+        print("Your debts:")
+        for i, debt in enumerate(self.accounts[account_number]["debts"],start=1):
+            print(f"{i}- {debt['description']} : {debt['amount']:.2f}")
         try:
-            amount = float(input("Enter amount to pay towards debt: "))
-            finance = FinanceManager()
-            finance.pay_debt(self.accounts[account_number], amount)
-            self.save_account_data()
+            choice_debt = int(input("Choose a debt to pay: "))-1
+            if choice_debt < 0 or choice_debt >= len(self.accounts[account_number]["debts"]):
+                print(Fore.RED+"Invalid choice."+Style.RESET_ALL)
+                return
+            try:
+                amount = float(input("Enter amount to pay towards debt: "))
+                finance = FinanceManager()
+                finance.pay_debt(self.accounts[account_number], amount)
+                self.save_account_data()
+            except ValueError:
+                print(Fore.RED+"Invalid input. Please enter a valid number."+Style.RESET_ALL)
+                return
+            if amount > self.accounts[account_number]["debts"][choice_debt]["amount"]:
+                print(Fore.RED+"Amount exceeds total debt."+Style.RESET_ALL)
+                return
+            self.accounts[account_number]["balance"] -= amount  
+            self.accounts[account_number]["debts"][choice_debt]["amount"] -= amount
+
+            if self.accounts[account_number]["debts"][choice_debt]["amount"] <= 0:
+                self.accounts[account_number]["debts"].pop(choice_debt)
+
+            print(Fore.GREEN+"Debt paid successfully."+Style.RESET_ALL)
         except ValueError:
             print(Fore.RED+"Invalid input. Please enter a valid number."+Style.RESET_ALL)
+        
 
     def financial_summary(self):
         finance = FinanceManager()
@@ -202,5 +236,5 @@ class AccountOwner:
     
     def generate_financial_report(self):
         finance = FinanceManager()
-        finance.generate_financial_report(self.accounts)
+        finance.generate_financial_report(self.accounts,self.get_account_holder())
         

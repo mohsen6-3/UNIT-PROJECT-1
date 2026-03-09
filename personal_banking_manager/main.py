@@ -2,6 +2,12 @@ from bank_module.account_owner import AccountOwner
 from bank_module.user_manager import UserManager
 from colorama import Fore, Style
 import pwinput
+from pyfiglet import Figlet
+
+f = Figlet(font="small")
+
+print(Fore.BLUE+f.renderText("Unified Personal Banking Manager")+Style.RESET_ALL)
+
 
 
 user_manager = UserManager()
@@ -20,7 +26,7 @@ def require_login():
         print(Fore.BLUE+"You must login first."+Style.RESET_ALL)
         return False
     return True
-menu = '''
+menu ='''
 \n"===== Unified Personal Banking Manager ====="
 1- Register account holder
 2- Login account holder
@@ -41,8 +47,9 @@ menu = '''
 Please select an option (1-16):
 '''
 
+
 while True:
-    choice = input(menu)
+    choice = input(Fore.LIGHTWHITE_EX + menu + Style.RESET_ALL)
     match choice:
         # Register Account Holder
         case "1":
