@@ -1,12 +1,11 @@
 from fpdf import FPDF
-from pathlib import Path
-from colorama import Fore, Style,Back
+from colorama import Fore, Style
 import os
-import shutil
 from datetime import datetime 
 from tabulate import tabulate
 # create a finance manager class
 class FinanceManager:
+    
     # function add income
     def add_income(self,account: dict, amount: float):
         account["income"].append(amount)
@@ -45,7 +44,7 @@ class FinanceManager:
         
 
         # function financial summary
-    def financial_summary(self,account: dict):
+    def financial_summary(self,account: dict,show=True):
         total_income = 0
         total_expenses = 0
         total_debts = 0 
@@ -56,37 +55,39 @@ class FinanceManager:
             total_expenses += sum(acc["expenses"])
             total_debts += sum(debt["amount"] for debt in acc["debts"])
             total_balance += acc["balance"]
-        
-        data =[
-            ["Total Income", f"{total_income:.2f} SAR"],
-            ["Total Expenses", f"{total_expenses:.2f} SAR"],
-            ["Total Debts", f"{total_debts:.2f} SAR"],
-            ["Total Balance", f"{total_balance:.2f} SAR"]
-        ]
 
-        header = ["Financial Summary", "Amount (SAR)"]
-        print(tabulate(data, headers=header, tablefmt="fancy_grid"))
+        if show:
+            data =[
+                ["Total Income", f"{total_income:.2f} SAR"],
+                ["Total Expenses", f"{total_expenses:.2f} SAR"],
+                ["Total Debts", f"{total_debts:.2f} SAR"],
+                ["Total Balance", f"{total_balance:.2f} SAR"]
+            ]
+
+            header = ["Financial Summary", "Amount (SAR)"]
+            print(tabulate(data, headers=header, tablefmt="fancy_grid"))
         return total_income, total_expenses, total_debts, total_balance
 
     # function net worth calculation
-    def net_worth_calculation(self,account: dict):
+    def net_worth_calculation(self,account: dict,show=True):
         total_balance = 0
         total_debts = 0
         for acc in account.values():
             total_balance += acc["balance"] 
             total_debts += sum(debt["amount"] for debt in acc["debts"])
         net_worth = total_balance - total_debts
-
-        data = [
-            ["Total Balance", f"{total_balance:.2f} SAR"],
-            ["Total Debts", f"{total_debts:.2f} SAR"],
-            ["Net Worth", f"{net_worth:.2f} SAR"]
-        ]
-        header = ["Net Worth Calculation", "Amount (SAR)"]
-        print(tabulate(data, headers=header, tablefmt="fancy_grid"))
+        if show:
+            data = [
+                ["Total Balance", f"{total_balance:.2f} SAR"],
+                ["Total Debts", f"{total_debts:.2f} SAR"],
+                ["Net Worth", f"{net_worth:.2f} SAR"]
+            ]
+            header = ["Net Worth Calculation", "Amount (SAR)"]
+            print(tabulate(data, headers=header, tablefmt="fancy_grid"))
         return total_balance, total_debts, net_worth
 
-    def financial_score(self,account: dict):
+    # function financial score
+    def financial_score(self,account: dict,show=True):
         total_balance = 0
         total_debts = 0
         total_income = 0
@@ -112,27 +113,29 @@ class FinanceManager:
             score -=10
 
         score = max(0,round(score,2))
-        data = [
-            ["Score", f"{score}/100"]
-        ]
-        header = ["Financial Score", "Rating"]
-        print(tabulate(data, headers=header, tablefmt="fancy_grid"))
-       
-        if score >= 80:
-            print(Fore.GREEN+"Excellent financial health."+Style.RESET_ALL)
-        elif score >= 60:
-            print(Fore.GREEN+"Good financial health."+Style.RESET_ALL)
-        elif score >= 40:
-            print(Fore.GREEN+"Average financial health."+Style.RESET_ALL)
-        else:
-            print(Fore.RED+"Poor financial health."+Style.RESET_ALL)
+        if show:
+            data = [
+                ["Score", f"{score}/100"]
+            ]
+            header = ["Financial Score", "Rating"]
+            print(tabulate(data, headers=header, tablefmt="fancy_grid"))
+        
+            if score >= 80:
+                print(Fore.GREEN+"Excellent financial health."+Style.RESET_ALL)
+            elif score >= 60:
+                print(Fore.GREEN+"Good financial health."+Style.RESET_ALL)
+            elif score >= 40:
+                print(Fore.GREEN+"Average financial health."+Style.RESET_ALL)
+            else:
+                print(Fore.RED+"Poor financial health."+Style.RESET_ALL)
         return score
         
+        # function to generate financial report
     def generate_financial_report(self, accounts: dict, account_holder: str):
 
-        income, expenses, debts, balance = self.financial_summary(accounts)
-        total_balance, total_debts, net_worth = self.net_worth_calculation(accounts)
-        score = self.financial_score(accounts)
+        income, expenses, debts, balance = self.financial_summary(accounts,show=False)
+        total_balance, total_debts, net_worth = self.net_worth_calculation(accounts,show=False)
+        score = self.financial_score(accounts,show=False)
 
         pdf = FPDF()
         pdf.add_page()
@@ -187,13 +190,13 @@ class FinanceManager:
         pdf.cell(0,8,f"Score: {score}/100",ln=True)
 
         if score >= 80:
-            status = "Excellent"
+            status = "Excellent financial health."
         elif score >= 60:
-            status = "Good"
+            status = "Good financial health."
         elif score >= 40:
-            status = "Average"
+            status = "Average financial health."
         else:
-            status = "Poor"
+            status = "Poor financial health."
 
         pdf.cell(0,8,f"Financial Health: {status}",ln=True)
 
@@ -229,5 +232,3 @@ class FinanceManager:
         pdf.output(file_path)
 
         print(Fore.GREEN+"Financial report generated successfully."+Style.RESET_ALL)
-        
-                

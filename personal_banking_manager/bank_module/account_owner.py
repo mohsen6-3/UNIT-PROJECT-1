@@ -1,6 +1,6 @@
 import json
 from bank_module.finance_manager import FinanceManager
-from colorama import Fore, Style,Back
+from colorama import Fore, Style
 from tabulate import tabulate
 FILE_NAME = "personal_banking_manager/bank_data/accounts.json"
 # Create class AccountOwner
@@ -113,9 +113,8 @@ class AccountOwner:
 
     # function to save account data to a JSON file
     def save_account_data(self):
-        
         try:
-            with open(FILE_NAME, "r") as file:
+            with open(FILE_NAME, "r", encoding="utf-8") as file:
                 data = json.load(file)
         except FileNotFoundError:
             data = {}
@@ -124,13 +123,13 @@ class AccountOwner:
             "password": self.get_password(),
             "accounts": self.accounts
         }
-        with open(FILE_NAME, "w") as file:
+        with open(FILE_NAME, "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
 
     # function to load account data from a JSON file
     def load_account_data(self):
         try:
-            with open(FILE_NAME, "r") as file:
+            with open(FILE_NAME, "r", encoding="utf-8") as file:
                 data = json.load(file)
                 if str(self.get_national_id()) in data:
                     self._password = data[str(self.get_national_id())]["password"]

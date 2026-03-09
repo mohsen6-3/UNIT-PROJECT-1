@@ -1,12 +1,11 @@
-from bank_module.account_owner import AccountOwner
 from bank_module.user_manager import UserManager
 from colorama import Fore, Style
 import pwinput
 from pyfiglet import Figlet
 
-f = Figlet(font="small")
+f = Figlet(font="standard")
 
-print(Fore.BLUE+f.renderText("Unified Personal Banking Manager")+Style.RESET_ALL)
+print(Fore.BLUE+f.renderText("Personal Banking Manager")+Style.RESET_ALL)
 
 
 
@@ -27,7 +26,7 @@ def require_login():
         return False
     return True
 menu ='''
-\n"===== Unified Personal Banking Manager ====="
+\n"===== Personal Banking Manager ====="
 1- Register account holder
 2- Login account holder
 3- Logout account holder
@@ -74,12 +73,20 @@ while True:
             if current_user is not None:
                 print(Fore.BLUE + f"User {current_user.get_account_holder()} already logged in." + Style.RESET_ALL)
                 continue
-
             national_id = get_number_input("Enter your national ID: ")
             if national_id is None:
                 continue
             try:
-                password = pwinput.pwinput("Enter your password: ", mask="*")
+                password = pwinput.pwinput("Enter your password (or type 'forget' to reset password): ", mask="*")
+                if password.lower() == "forget":
+                    new_password = pwinput.pwinput("Enter your new password: ", mask="*")
+                    confirm_password = pwinput.pwinput("Confirm your new password: ", mask="*")
+                    if new_password != confirm_password:
+                        print(Fore.RED+"Passwords do not match. Please try again."+Style.RESET_ALL)
+                        continue
+                    user_manager.reset_password(national_id, new_password)
+                    print(Fore.GREEN+"Password reset successfully. Please login with your new password."+Style.RESET_ALL)
+                    continue
             except ValueError:
                 print(Fore.RED+"Invalid input. Please enter a valid password."+Style.RESET_ALL)
                 continue
