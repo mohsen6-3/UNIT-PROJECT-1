@@ -228,5 +228,5 @@ class FinanceManager:
         pdf.output(file_path)
 
         print(Fore.GREEN + "Financial report generated successfully." + Style.RESET_ALL)
-        print(f"Report location: {os.path.abspath(file_path)}")
+        # print(f"Report location: {os.path.abspath(file_path)}")
                 

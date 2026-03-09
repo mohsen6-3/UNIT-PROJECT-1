@@ -52,6 +52,10 @@ while True:
                 continue
             try:
                 password = int(pwinput.pwinput("Enter your password: ", mask="*"))
+                confirm = int(pwinput.pwinput("Confirm password: ", mask="*"))
+                if password != confirm:
+                    print(Fore.RED+"Passwords do not match. Please try again."+Style.RESET_ALL)
+                    continue
             except ValueError:
                 print(Fore.RED+"Invalid input. Please enter a valid password."+Style.RESET_ALL)
                 continue
@@ -87,7 +91,7 @@ while True:
             if not require_login():
                 continue
 
-            bank = input("Enter your bank name: ")
+            bank = input("Enter your bank name such as (Alrajhi-SNP-Riyadh-Alinma-Albilad-...): ")
             account_number = get_number_input("Enter your account number: ")
             if account_number is None:
                 continue

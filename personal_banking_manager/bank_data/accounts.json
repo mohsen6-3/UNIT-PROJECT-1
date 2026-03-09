@@ -2,11 +2,76 @@
     "1117442507": {
         "account_holder": "mohsen",
         "password": "560602524",
-        "accounts": {}
+        "accounts": {
+            "1": {
+                "bank_name": "SNP",
+                "balance": 800000.0,
+                "income": [
+                    1000000.0
+                ],
+                "expenses": [
+                    200000.0,
+                    200000.0
+                ],
+                "debts": [
+                    {
+                        "amount": 200000.0,
+                        "description": "for ali"
+                    }
+                ]
+            },
+            "2": {
+                "bank_name": "STC bank",
+                "balance": 550000.0,
+                "income": [
+                    500000.0
+                ],
+                "expenses": [
+                    150000.0
+                ],
+                "debts": [
+                    {
+                        "amount": 200000.0,
+                        "description": "for bank "
+                    }
+                ]
+            }
+        }
     },
     "1": {
         "account_holder": "ali",
         "password": "560602524",
         "accounts": {}
+    },
+    "123456789": {
+        "account_holder": "fahad",
+        "password": "12345",
+        "accounts": {}
+    },
+    "6": {
+        "account_holder": "sara",
+        "password": "123456",
+        "accounts": {
+            "1": {
+                "bank_name": "SNP",
+                "balance": 1300.0,
+                "income": [
+                    3000.0,
+                    2500.0
+                ],
+                "expenses": [
+                    300.0,
+                    3000.0,
+                    2000.0,
+                    400.0
+                ],
+                "debts": [
+                    {
+                        "amount": 1500.0,
+                        "description": "for ali"
+                    }
+                ]
+            }
+        }
     }
 }

@@ -109,6 +109,7 @@ class AccountOwner:
             data = {}
         data[str(self.get_national_id())] = {
             "account_holder": self.get_account_holder(),
+            "password": self.get_password(),
             "accounts": self.accounts
         }
         with open(FILE_NAME, "w") as file:
@@ -120,6 +121,7 @@ class AccountOwner:
             with open(FILE_NAME, "r") as file:
                 data = json.load(file)
                 if str(self.get_national_id()) in data:
+                    self._password = data[str(self.get_national_id())]["password"]
                     self.accounts = data[str(self.get_national_id())]["accounts"]
                 else:
                     self.accounts = {}
