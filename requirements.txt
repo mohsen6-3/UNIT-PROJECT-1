@@ -1,0 +1,13 @@
+art==6.5
+colorama==0.4.6
+fire==0.7.1
+fpdf==1.7.2
+markdown-it-py==4.0.0
+mdurl==0.1.2
+pwinput==1.0.3
+pyfiglet==1.0.4
+Pygments==2.19.2
+rich==14.3.3
+tabulate==0.10.0
+termcolor==3.3.0
+text2art==0.2.0
