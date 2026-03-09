@@ -34,7 +34,7 @@
  - type in financial_summary to display a table summary of all accounts
  - type in net_worth to calculate total net worth
  - type in financial_score to display Financial Health Score
- - type in generate_report to generate PDF report (user chooses weekly, monthly, or full summary).
+ - type in generate_report to generate PDF report.
  - type in exit to exit the system.
 
 ### NOTE: before submitting the final project, please do the following command:

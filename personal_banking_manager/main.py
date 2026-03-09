@@ -58,8 +58,8 @@ while True:
             if national_id is None:
                 continue
             try:
-                password = int(pwinput.pwinput("Enter your password: ", mask="*"))
-                confirm = int(pwinput.pwinput("Confirm password: ", mask="*"))
+                password = pwinput.pwinput("Enter your password: ", mask="*")
+                confirm = pwinput.pwinput("Confirm password: ", mask="*")
                 if password != confirm:
                     print(Fore.RED+"Passwords do not match. Please try again."+Style.RESET_ALL)
                     continue
@@ -79,7 +79,7 @@ while True:
             if national_id is None:
                 continue
             try:
-                password = int(pwinput.pwinput("Enter your password: ", mask="*"))
+                password = pwinput.pwinput("Enter your password: ", mask="*")
             except ValueError:
                 print(Fore.RED+"Invalid input. Please enter a valid password."+Style.RESET_ALL)
                 continue
@@ -115,18 +115,18 @@ while True:
         case "6":
             if not require_login():
                 continue
-
+            
+            current_user.show_accounts()
             account_number = get_number_input("Enter your account number: ")
             if account_number is None:
                 continue
-
             current_user.delete_account(account_number)
     
         # Update Bank Account
         case "7":
             if not require_login():
                 continue
-
+            current_user.show_accounts()
             account_number = get_number_input("Enter your account number: ")
             if account_number is None:
                 continue
@@ -137,7 +137,7 @@ while True:
         case "8":
             if not require_login():
                 continue
-
+            current_user.show_accounts()
             account_number = get_number_input("Enter your account number: ")
             if account_number is None:
                 continue
@@ -147,7 +147,7 @@ while True:
         case "9":
             if not require_login():
                 continue
-
+            current_user.show_accounts()
             account_number = get_number_input("Enter your account number: ")
             if account_number is None:
                 continue
@@ -157,7 +157,7 @@ while True:
         case "10":
             if not require_login():
                 continue
-
+            current_user.show_accounts()
             account_number = get_number_input("Enter your account number: ")
             if account_number is None:
                 continue
@@ -167,13 +167,13 @@ while True:
         case "11":
             if not require_login():
                 continue
-
+            current_user.show_accounts()
             account_number = get_number_input("Enter your account number: ")
             if account_number is None:
                 continue
 
             current_user.pay_debt(account_number)
-        # Financial Summary15
+        # Financial Summary
         case "12":
             if not require_login():
                 continue
