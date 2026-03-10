@@ -35,6 +35,3 @@
  - type in financial_score to display Financial Health Score
  - type in generate_report to generate PDF report.
  - type in exit to exit the system.
-
-### NOTE: before submitting the final project, please do the following command:
-`pip freeze > requirements.txt` to enable use to know & use the packages used in your project.

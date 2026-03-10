@@ -85,13 +85,13 @@ class AccountOwner:
             print(Fore.BLUE+"Account not found."+Style.RESET_ALL)
             return
         
-        choise = input("Do you want to update (bank) only or (all)? ")
+        choise = input("Do you want to update 1-(bank) only or 2-(bank and account number)? Enter 1 or 2:")
 
-        if choise.lower() == "bank":
+        if choise.lower() == "1":
             new_bank_name = input("Enter new bank name such as (Alrajhi-SNP-Riyadh-Alinma-Albilad-...): ")
             self.accounts[account_number]["bank_name"] = new_bank_name
 
-        elif choise.lower() == "all":
+        elif choise.lower() == "2":
             try:
                 new_account_number = int(input("Enter new account number: "))
             except ValueError:

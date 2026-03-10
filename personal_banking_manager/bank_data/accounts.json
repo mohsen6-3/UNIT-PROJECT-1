@@ -1,25 +1,3 @@
 {
-    "123456789": {
-        "account_holder": "mohsen",
-        "password": "1234",
-        "accounts": {
-            "1": {
-                "bank_name": "SNP",
-                "balance": 0.0,
-                "income": [
-                    1000.0
-                ],
-                "expenses": [
-                    200.0,
-                    900.0
-                ],
-                "debts": [
-                    {
-                        "amount": 100.0,
-                        "description": "for ali"
-                    }
-                ]
-            }
-        }
-    }
+    
 }

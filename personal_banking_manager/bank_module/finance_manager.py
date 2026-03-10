@@ -209,13 +209,14 @@ class FinanceManager:
         pdf.set_font("Arial",size=12)
 
         for name, acc in accounts.items():
-
+            bank = acc["bank_name"]
             balance = acc["balance"]
             income = sum(acc["income"])
             expenses = sum(acc["expenses"])
             debts = sum(debt["amount"] for debt in acc["debts"])
 
             pdf.cell(0,8,f"Account: {name}",ln=True)
+            pdf.cell(0,8,f"Bank: {bank}",ln=True)
             pdf.cell(0,8,f"Balance: {balance:.2f} SAR",ln=True)
             pdf.cell(0,8,f"Income: {income:.2f} SAR",ln=True)
             pdf.cell(0,8,f"Expenses: {expenses:.2f} SAR",ln=True)
